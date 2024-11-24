@@ -1,0 +1,48 @@
+@font-face {
+    font-family: 'Despairs Trial';
+    src: url('./Despairs Trial.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ekors';
+    src: url('./Ekors.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Eunomia-Bold';
+    src: url('./Eunomia-Bold.otf') format('opentype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Eunomia-Regular';
+    src: url('./Eunomia-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Eunomia-Bold';
+    src: url('./Eunomia-Bold.otf') format('opentype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Hunt';
+    src: url('./Hunt.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto mono';
+    src: url('./RobotoMono-ExtraLight.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
