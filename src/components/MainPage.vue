@@ -252,7 +252,7 @@ a {
 }
 
 h1 {
-	font-size: 6vw; /* Responsive font size */
+	font-size: 5vw; /* Responsive font size */
 	margin: 0 5px;
 	text-align: left;
 }
@@ -327,7 +327,6 @@ li {
 }
 
 .content {
-	font-size: 24px;
 	margin: 10px;
 	overflow-x: hidden; /* Prevent horizontal overflow */
 	overflow-y: auto; /* Allow vertical scrolling if needed */
@@ -349,15 +348,9 @@ li {
 				flex-direction: row;
 				justify-content: flex-end;
 				gap: 10px;
+				font-size: 4vw;
 
-				a {
-					font-size: 6vw;
-				}
 			}
-		}
-
-		a {
-			font-size: 6vw; /* Responsive font size */
 		}
 
 		span {
