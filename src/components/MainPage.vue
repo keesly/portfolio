@@ -148,7 +148,7 @@ export default {
 				},
 				{
 					"name": "FISH WEIGHT PREDICTION",
-					"html_url": "https://github.com/keesly/portfolio",
+					"html_url": "",
 					"description": "fish weight estimation",
 					"type": "ML",
 					"language": "Python",
