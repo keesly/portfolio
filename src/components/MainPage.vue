@@ -58,7 +58,7 @@
 					<div v-if="selectedOption === 'aboutMe'">
 						Born in 1999 in Far-Eastern region of Russia.<br />I am a
 						results-oriented fullstack web developer committed to crafting
-						high-performance web applications.<br><br>My goal is to merge
+						high-performance web applications.<br /><br />My goal is to merge
 						functionality and aesthetics to create exceptional user experiences.
 					</div>
 					<div v-if="selectedOption === 'projects'">
@@ -70,11 +70,16 @@
 								@mouseleave="onMouseLeave"
 							>
 								<a
-									v-if="project.name != 'portfolio'"
 									:href="project.html_url"
 									target="_blank"
 									>{{ project.name }}</a
 								>
+								<div>
+									<span>{{project.updated_at}}</span><span>/</span>
+									<span>{{project.type}}</span><span>/</span>
+									<span>{{project.language}}</span>
+								</div>
+
 							</li>
 						</ul>
 					</div>
@@ -82,13 +87,13 @@
 						<ul>
 							<li>
 								<a href="" target="_blank">
-									<img :src="require('@/assets/icons/tg.png')" alt="telegram" />
+									<!-- <img :src="require('@/assets/icons/tg.png')" alt="telegram" /> -->
 									<div>telegram</div>
 								</a>
 							</li>
 							<li>
 								<a href="" target="_blank">
-									<img :src="require('@/assets/icons/wa.png')" alt="whatsapp" />
+									<!-- <img :src="require('@/assets/icons/wa.png')" alt="whatsapp" /> -->
 									<div>whatsapp</div>
 								</a>
 							</li>
@@ -97,13 +102,13 @@
 									href="https://www.linkedin.com/in/mark-ryzhov-576487309?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BAt3GM91fQ%2F6p8%2BtL2zHQvA%3D%3D"
 									target="_blank"
 								>
-									<img :src="require('@/assets/icons/li.png')" alt="linkedin" />
+									<!-- <img :src="require('@/assets/icons/li.png')" alt="linkedin" /> -->
 									<div>linkedin</div>
 								</a>
 							</li>
 							<li>
 								<a href="mailto:fidgetyman@gmail.com" target="_blank">
-									<img :src="require('@/assets/icons/email.png')" alt="email" />
+									<!-- <img :src="require('@/assets/icons/email.png')" alt="email" /> -->
 									<div>fidgetyman@gmail.com</div>
 								</a>
 							</li>
@@ -116,13 +121,13 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 import AsciiEffectCanvas from "./AsciiEffectCanvas.vue";
 import Particles from "./Particles.vue";
 import ImageParticles from "./ImageParticles.vue";
 import "@/assets/fonts/fonts.css";
-import customCursorDark from '@/assets/textures/cursor.png';
-import customCursorLight from '@/assets/textures/cursor-light.png';
+import customCursorDark from "@/assets/textures/cursor.png";
+import customCursorLight from "@/assets/textures/cursor-light.png";
 
 export default {
 	components: {
@@ -132,14 +137,31 @@ export default {
 	},
 	data() {
 		return {
-			projects: [],
+			projects: [
+				{
+					"name": "PORTFOLIO",
+					"html_url": "https://github.com/keesly/portfolio",
+					"description": "portfolio",
+					"type": 'web app',
+					"language": "Vue+Python",
+					"updated_at": "DEC 2024",
+				},
+				{
+					"name": "FISH WEIGHT PREDICTION",
+					"html_url": "https://github.com/keesly/portfolio",
+					"description": "fish weight estimation",
+					"type": "ML",
+					"language": "Python",
+					"updated_at": "OCT 2024",
+				}
+			],
 			loading: true,
 			error: null,
 			selectedOption: "aboutMe",
 			currentTheme: "light",
 			asciiEffectEnabled: false,
 			currentParticleImage: "",
-			customCursor: `url(${customCursorDark}) 16 16, pointer`
+			customCursor: `url(${customCursorDark}) 16 16, pointer`,
 		};
 	},
 	computed: {
@@ -149,10 +171,10 @@ export default {
 	},
 	async mounted() {
 		try {
-			const response = await axios.get(
-				`${process.env.VUE_APP_API_URL}/projects`
-			);
-			this.projects = response.data.projects;
+			// const response = await axios.get(
+			// 	`${process.env.VUE_APP_API_URL}/projects`
+			// );
+			// this.projects = response.data.projects;
 		} catch (err) {
 			console.log(err);
 			this.error = "Failed to load projects.";
@@ -177,7 +199,10 @@ export default {
 				this.currentTheme === "light"
 			);
 
-			this.customCursor = this.currentTheme === "dark" ? `url(${customCursorLight}) 16 16, pointer` : `url(${customCursorDark}) 16 16, pointer`;
+			this.customCursor =
+				this.currentTheme === "dark"
+					? `url(${customCursorLight}) 16 16, pointer`
+					: `url(${customCursorDark}) 16 16, pointer`;
 		},
 
 		toggleAsciiEffect() {
@@ -209,6 +234,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+/* Global styles for lists and links */
 ul,
 ol {
 	list-style: none; /* Remove bullet points */
@@ -226,31 +252,41 @@ a {
 }
 
 h1 {
-	margin: 0;
-	color: var(--text-color);
+	font-size: 6vw; /* Responsive font size */
+	margin: 0 5px;
+	text-align: left;
 }
+
 .wrapper {
 	position: relative;
 	border: 1px solid rgb(187, 187, 187);
+	margin: 20px;
+	height: calc(100vh - 60px);
+	max-width: 90%; /* Ensures the wrapper fits within screen bounds */
+	overflow: hidden; /* Prevent overflow */
 
-	margin: 50px;
-	height: 87vh;
+	@media (min-width: 768px) {
+		max-width: none; /* Original width for larger screens */
+	}
 }
 
 .text {
-	position: absolute;
+	position: relative;
 	font-family: "Roboto mono", sans-serif;
-	margin-left: 50px;
-	margin-top: 50px;
-	font-size: 24px;
-	text-align: left;
-	width: 30%;
+	padding: 20px;
+	font-size: 4vw; /* Responsive font size */
+	text-align: left; /* Center align text for smaller screens */
+
+	@media (min-width: 768px) {
+		text-align: left;
+	}
 }
 
 .job {
-	font-size: 20px;
+	font-size: 2vw; /* Responsive font size */
 	font-weight: 800;
 	color: var(--text-color);
+	margin: 20px 5px;
 }
 
 li {
@@ -258,63 +294,124 @@ li {
 	transition: 0.15s ease;
 	width: fit-content;
 	color: var(--text-color);
-
-	&:hover {
-		color: rgb(187, 187, 187);
-	}
+	text-align: center; /* Center-align text on mobile */
 
 	a {
 		text-decoration: none;
 		gap: 10px;
 		display: flex;
 		align-items: center;
+		justify-content: flex-end; /* Center-align links on mobile */
+		text-align: right;
 	}
 
 	img {
-		width: 24px;
-		height: 24px;
+		width: 20px; /* Smaller icon size for mobile */
+		height: 20px;
+
+		@media (min-width: 768px) {
+			width: 24px; /* Original size for tablets and above */
+			height: 24px;
+		}
 	}
 }
 
 .sections {
-	margin-top: 30px;
-	font-size: 14px;
+	margin: 20px 5px;
+	font-size: 1vw; /* Smaller font for mobile */
 	font-weight: 800;
-	transition: 0.1s ease;
 
 	.selected {
 		color: rgb(187, 187, 187);
 	}
 }
 
+.content {
+	font-size: 24px;
+	margin: 10px;
+	overflow-x: hidden; /* Prevent horizontal overflow */
+	overflow-y: auto; /* Allow vertical scrolling if needed */
+
+	&>div {
+		font-size: 2vw;
+	}
+
+	ul {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 20px;
+
+		li {
+			font-size: 6vw;
+			div {
+				display: flex;
+				flex-direction: row;
+				justify-content: flex-end;
+				gap: 10px;
+
+				a {
+					font-size: 6vw;
+				}
+			}
+		}
+
+		a {
+			font-size: 6vw; /* Responsive font size */
+		}
+
+		span {
+			font-size: 2vw;
+		}
+	}
+
+	@media (min-width: 768px) {
+		width: 95%;
+	}
+}
+
 .side-buttons {
-	display: flex;
-	flex-direction: row;
-	gap: 30px;
+	display: none;
+	flex-direction: column; /* Stack vertically for smaller screens */
+	gap: 10px;
 	position: fixed;
-	z-index: 2;
-	bottom: 180px;
-	left: -60px;
-	transform: rotate(-90deg);
+	bottom: 10px;
+	left: 50%; /* Center on mobile */
+	transform: translateX(-50%);
+
+	@media (min-width: 768px) {
+		display: flex;
+		flex-direction: row; /* Horizontal alignment for tablets and above */
+		bottom: 180px;
+		left: -60px;
+		transform: rotate(-90deg);
+	}
 
 	.theme-toggle,
 	.ascii-toggle {
 		width: fit-content;
+		color: var(--text-color);
 	}
 }
 
-.content {
-	font-size: 18px;
-	margin-top: 20px;
-	color: var(--text-color);
-}
-
+/* Border color matches the theme */
 .wrapper {
 	border-color: var(--text-color);
 }
 
-.side-buttons .theme-toggle,
-.ascii-toggle {
-	color: var(--text-color);
+/* Additional responsive adjustments */
+@media (max-width: 767px) {
 }
+
+@media (min-width: 768px) and (max-width: 1024px) {
+	.wrapper {
+		margin: 40px; /* Adjust the margin for tablets */
+		height: calc(100vh - 83px); /* 100vh minus twice the margin (40px top + 40px bottom) */
+	}
+}
+
+@media (min-width: 1025px) {
+
+}
+
 </style>

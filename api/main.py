@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 import requests
 from fastapi.middleware.cors import CORSMiddleware
-from .config import GITHUB_API_URL, FE_DOMAIN
+from config import GITHUB_API_URL, FE_DOMAIN
 
 app = FastAPI()
 
