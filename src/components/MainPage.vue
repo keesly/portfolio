@@ -27,36 +27,43 @@
 				:currentTheme="currentTheme"
 			/>
 			<div class="text">
-				<h1>Mark Ryzhov</h1>
-				<div class="job">Fullstack Developer</div>
-				<div class="sections">
-					<ul>
-						<li
-							:class="selectedOption === 'aboutMe' ? 'selected' : ''"
-							@click="selectOption('aboutMe')"
-						>
-							<span>{{ selectedOption === "aboutMe" ? "->" : "" }}</span> about
-							me
-						</li>
-						<li
-							:class="selectedOption === 'projects' ? 'selected' : ''"
-							@click="selectOption('projects')"
-						>
-							<span>{{ selectedOption === "projects" ? "->" : "" }}</span>
-							projects
-						</li>
-						<li
-							:class="selectedOption === 'contacts' ? 'selected' : ''"
-							@click="selectOption('contacts')"
-						>
-							<span>{{ selectedOption === "contacts" ? "->" : "" }}</span>
-							contacts
-						</li>
-					</ul>
+				<div class="left-side">
+					<h1>MARK RYZHOV</h1>
+					<div class="job">Fullstack Developer</div>
+					<div class="sections">
+						<ul>
+							<li
+								:class="selectedOption === 'aboutMe' ? 'selected' : ''"
+								@click="selectOption('aboutMe')"
+							>
+								<span>{{ selectedOption === "aboutMe" ? "->" : "" }}</span>
+								about me
+							</li>
+							<li
+								:class="selectedOption === 'projects' ? 'selected' : ''"
+								@click="selectOption('projects')"
+							>
+								<span>{{ selectedOption === "projects" ? "->" : "" }}</span>
+								projects
+							</li>
+							<li
+								:class="selectedOption === 'contacts' ? 'selected' : ''"
+								@click="selectOption('contacts')"
+							>
+								<span>{{ selectedOption === "contacts" ? "->" : "" }}</span>
+								contacts
+							</li>
+						</ul>
+					</div>
 				</div>
-				<div class="content">
-					<div v-if="selectedOption === 'aboutMe'">
-						Born in 1999 in Far-Eastern region of Russia.<br />I am a
+
+				<div class="content" style="overflow-y: auto; max-height: 100%">
+					<div
+						v-if="selectedOption === 'aboutMe'"
+						class="about-me-text"
+						style="margin-top: 20px"
+					>
+						Born in 1999 in Far-Eastern region of Russia.<br /><br />I am a
 						results-oriented fullstack web developer committed to crafting
 						high-performance web applications.<br /><br />My goal is to merge
 						functionality and aesthetics to create exceptional user experiences.
@@ -69,30 +76,28 @@
 								@mouseover="onHoverContact(project.name)"
 								@mouseleave="onMouseLeave"
 							>
-								<a
-									:href="project.html_url"
-									target="_blank"
-									>{{ project.name }}</a
-								>
+								<a :href="project.html_url" target="_blank">{{
+									project.name
+								}}</a>
 								<div>
-									<span>{{project.updated_at}}</span><span>/</span>
-									<span>{{project.type}}</span><span>/</span>
-									<span>{{project.language}}</span>
+									<span>{{ project.updated_at }}</span
+									><span>/</span> <span>{{ project.type }}</span
+									><span>/</span>
+									<span>{{ project.language }}</span>
 								</div>
-
 							</li>
 						</ul>
 					</div>
-					<div v-if="selectedOption === 'contacts'">
+					<div v-if="selectedOption === 'contacts'" style="margin-top: 20px">
 						<ul>
 							<li>
-								<a href="" target="_blank">
+								<a href="https://t.me/eveanatomy" target="_blank">
 									<!-- <img :src="require('@/assets/icons/tg.png')" alt="telegram" /> -->
 									<div>telegram</div>
 								</a>
 							</li>
 							<li>
-								<a href="" target="_blank">
+								<a href="https://wa.me/996708857412" target="_blank">
 									<!-- <img :src="require('@/assets/icons/wa.png')" alt="whatsapp" /> -->
 									<div>whatsapp</div>
 								</a>
@@ -139,21 +144,37 @@ export default {
 		return {
 			projects: [
 				{
-					"name": "PORTFOLIO",
-					"html_url": "https://github.com/keesly/portfolio",
-					"description": "portfolio",
-					"type": 'web app',
-					"language": "Vue+Python",
-					"updated_at": "DEC 2024",
+					name: "PORTFOLIO",
+					html_url: "https://github.com/keesly/portfolio",
+					description: "portfolio",
+					type: "web app",
+					language: "Vue+Python",
+					updated_at: "DEC 2024",
 				},
 				{
-					"name": "FISH WEIGHT PREDICTION",
-					"html_url": "",
-					"description": "fish weight estimation",
-					"type": "ML",
-					"language": "Python",
-					"updated_at": "OCT 2024",
-				}
+					name: "FISH WEIGHT PREDICTION",
+					html_url: "",
+					description: "fish weight estimation",
+					type: "ML",
+					language: "Python",
+					updated_at: "OCT 2024",
+				},
+				{
+					name: "AI ASSISSTANT",
+					html_url: "",
+					description: "ai chat assisstant",
+					type: "web app",
+					language: "Vue+Python",
+					updated_at: "AUG 2024",
+				},
+				{
+					name: "NEWS ANALYSER",
+					html_url: "",
+					description: "news analyser",
+					type: "web app",
+					language: "Streamlit+Python",
+					updated_at: "MAY 2021",
+				},
 			],
 			loading: true,
 			error: null,
@@ -169,7 +190,20 @@ export default {
 			return this.currentTheme === "dark";
 		},
 	},
+	watch: {
+		// Watch for changes in the selectedOption to add/remove scroll listener dynamically
+		selectedOption(newOption) {
+			if (newOption === "projects") {
+				this.attachScrollListener();
+			} else {
+				this.detachScrollListener();
+			}
+		},
+	},
 	async mounted() {
+		if (this.selectedOption === "projects") {
+			this.attachScrollListener();
+		}
 		try {
 			// const response = await axios.get(
 			// 	`${process.env.VUE_APP_API_URL}/projects`
@@ -182,7 +216,31 @@ export default {
 			this.loading = false;
 		}
 	},
+	beforeUnmount() {
+		this.detachScrollListener();
+	},
 	methods: {
+		attachScrollListener() {
+			const contentDiv = this.$el.querySelector(".content");
+			console.log("attaching to ", contentDiv);
+			if (contentDiv) {
+				contentDiv.addEventListener("scroll", this.handleScroll);
+			}
+		},
+		// Detach the scroll listener
+		detachScrollListener() {
+			const contentDiv = this.$el.querySelector(".content");
+			if (contentDiv) {
+				contentDiv.removeEventListener("scroll", this.handleScroll);
+			}
+		},
+		// Handle the scroll event
+		handleScroll(event) {
+			const contentDiv = event.target;
+			console.log("Scroll Top:", contentDiv.scrollTop);
+			console.log("Scroll Height:", contentDiv.scrollHeight);
+			console.log("Client Height:", contentDiv.clientHeight);
+		},
 		selectOption(option) {
 			this.selectedOption = option;
 			this.currentParticleImage = "";
@@ -255,6 +313,7 @@ h1 {
 	font-size: 5vw; /* Responsive font size */
 	margin: 0 5px;
 	text-align: left;
+	font-weight: 600;
 }
 
 .wrapper {
@@ -270,12 +329,20 @@ h1 {
 	}
 }
 
+.about-me-text {
+	font-weight: 600;
+}
+
 .text {
 	position: relative;
 	font-family: "Roboto mono", sans-serif;
-	padding: 20px;
+	padding: 0 20px 20px 20px;
 	font-size: 4vw; /* Responsive font size */
 	text-align: left; /* Center align text for smaller screens */
+	display: flex;
+	flex-direction: row;
+	height: 100%;
+	gap: 80px;
 
 	@media (min-width: 768px) {
 		text-align: left;
@@ -284,7 +351,7 @@ h1 {
 
 .job {
 	font-size: 2vw; /* Responsive font size */
-	font-weight: 800;
+	font-weight: 600;
 	color: var(--text-color);
 	margin: 20px 5px;
 }
@@ -318,21 +385,41 @@ li {
 
 .sections {
 	margin: 20px 5px;
-	font-size: 1vw; /* Smaller font for mobile */
+	font-size: 3vw; /* Smaller font for mobile */
 	font-weight: 800;
 
 	.selected {
 		color: rgb(187, 187, 187);
 	}
+
+	li:hover {
+		color: rgb(187, 187, 187);
+	}
+
+	@media (min-width: 768px) {
+		font-size: 3vw;
+	}
+}
+
+.left-side {
+	margin-top: 20px;
 }
 
 .content {
-	margin: 10px;
 	overflow-x: hidden; /* Prevent horizontal overflow */
-	overflow-y: auto; /* Allow vertical scrolling if needed */
+	overflow-y: auto;
+	flex: 1; /* Take up remaining space */
+	-ms-overflow-style: none; /* Hide scrollbar for Internet Explorer and Edge */
+	scrollbar-width: none; /* Hide scrollbar for Firefox */
 
-	&>div {
+	/* For WebKit browsers (Chrome, Safari, etc.) */
+	&::-webkit-scrollbar {
+		display: none; /* Hide scrollbar */
+	}
+
+	& > div {
 		font-size: 2vw;
+		text-align: right;
 	}
 
 	ul {
@@ -342,24 +429,19 @@ li {
 		gap: 20px;
 
 		li {
-			font-size: 6vw;
+			font-size: 5vw;
 			div {
 				display: flex;
 				flex-direction: row;
 				justify-content: flex-end;
-				gap: 10px;
+				gap: 20px;
 				font-size: 4vw;
-
 			}
 		}
 
 		span {
 			font-size: 2vw;
 		}
-	}
-
-	@media (min-width: 768px) {
-		width: 95%;
 	}
 }
 
@@ -394,17 +476,67 @@ li {
 
 /* Additional responsive adjustments */
 @media (max-width: 767px) {
+	.sections {
+		font-size: 3vw;
+	}
+	h1 {
+		font-size: 7vw;
+	}
+	.job {
+		font-size: 4vw;
+	}
+	.content > div {
+		font-size: 4vw;
+
+		ul {
+			li {
+				font-size: 8vw;
+				div {
+					gap: 10px;
+				}
+			}
+			span {
+				font-size: 4vw;
+			}
+		}
+	}
+	.text {
+		flex-direction: column;
+		justify-content: flex-start;
+		gap: 20px;
+	}
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
 	.wrapper {
 		margin: 40px; /* Adjust the margin for tablets */
-		height: calc(100vh - 83px); /* 100vh minus twice the margin (40px top + 40px bottom) */
+		height: calc(100vh - 83px);
+	}
+	.sections {
+		font-size: 3vw;
+	}
+	h1 {
+		font-size: 7vw;
+	}
+	.job {
+		font-size: 4vw;
+	}
+	.content > div {
+		font-size: 4vw;
+		ul li div {
+			gap: 10px;
+		}
+	}
+	.text {
+		flex-direction: column;
+		justify-content: flex-start;
+		gap: 20px;
 	}
 }
 
 @media (min-width: 1025px) {
-
+	.sections {
+		font-size: 1.5vw;
+	}
 }
-
 </style>
