@@ -73,11 +73,11 @@
 							class="about-me-text"
 							style="margin-top: 20px"
 						>
-							Born in 1999 in Far-Eastern region of Russia.<br /><br />I am a
-							results-oriented fullstack web developer committed to crafting
-							high-performance web applications.<br /><br />My goal is to merge
-							functionality and aesthetics to create exceptional user
-							experiences.
+							I am a results-oriented fullstack software developer committed to
+							crafting high-quality applications and interfaces.<br /><br />
+							With a mission to present the possibilities of modern application
+							development, I identify my goal as merging functionality, aesthetics and efficiency to
+							create exceptional user experiences.
 						</div>
 						<div v-if="selectedOption === 'projects'">
 							<ul>
@@ -598,5 +598,4 @@ li {
 .fade-leave-active {
 	animation: fade 0.5s forwards;
 }
-
 </style>
