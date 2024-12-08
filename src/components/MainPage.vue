@@ -354,6 +354,7 @@ h1 {
 
 .about-me-text {
 	font-weight: 400;
+	font-size: 1.5vw !important;
 }
 
 .text {
