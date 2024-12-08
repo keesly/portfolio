@@ -1,128 +1,140 @@
 <template>
-	<div :style="{ cursor: customCursor }">
-		<div class="side-buttons">
-			<div class="theme-toggle" @click="toggleTheme">
-				<span>{{
-					currentTheme === "light" ? "Dark theme" : "Light theme"
-				}}</span>
-			</div>
-			<!-- <div class="ascii-toggle" @click="toggleAsciiEffect">
-				<span>{{
-					asciiEffectEnabled ? "ascii planet off" : "ascii planet on"
-				}}</span>
-			</div> -->
+	<transition name="fade-left-right" @after-leave="showMainContent">
+		<div v-if="loaderVisible" class="loader-container">
+			<LoaderText />
 		</div>
-		<div class="wrapper">
-			<AsciiEffectCanvas
-				v-if="asciiEffectEnabled"
-				:currentTheme="currentTheme"
-			/>
-			<Particles
-				v-else-if="currentParticleImage === ''"
-				:currentTheme="currentTheme"
-			/>
-			<ImageParticles
-				v-else
-				:particleImage="currentParticleImage"
-				:currentTheme="currentTheme"
-			/>
-			<div class="text">
-				<div class="left-side">
-					<h1>MARK RYZHOV</h1>
-					<div class="job">Fullstack Developer</div>
-					<div class="sections">
-						<ul>
-							<li
-								:class="selectedOption === 'aboutMe' ? 'selected' : ''"
-								@click="selectOption('aboutMe')"
-							>
-								<span>{{ selectedOption === "aboutMe" ? "->" : "" }}</span>
-								about me
-							</li>
-							<li
-								:class="selectedOption === 'projects' ? 'selected' : ''"
-								@click="selectOption('projects')"
-							>
-								<span>{{ selectedOption === "projects" ? "->" : "" }}</span>
-								projects
-							</li>
-							<li
-								:class="selectedOption === 'contacts' ? 'selected' : ''"
-								@click="selectOption('contacts')"
-							>
-								<span>{{ selectedOption === "contacts" ? "->" : "" }}</span>
-								contacts
-							</li>
-						</ul>
-					</div>
+	</transition>
+	<transition name="fade">
+		<div v-if="mainContentVisible" :style="{ cursor: customCursor }">
+			<div class="side-buttons">
+				<div class="theme-toggle" @click="toggleTheme">
+					<span>{{
+						currentTheme === "light" ? "Dark theme" : "Light theme"
+					}}</span>
 				</div>
-
-				<div class="content" style="overflow-y: auto; max-height: 100%">
-					<div
-						v-if="selectedOption === 'aboutMe'"
-						class="about-me-text"
-						style="margin-top: 20px"
-					>
-						Born in 1999 in Far-Eastern region of Russia.<br /><br />I am a
-						results-oriented fullstack web developer committed to crafting
-						high-performance web applications.<br /><br />My goal is to merge
-						functionality and aesthetics to create exceptional user experiences.
-					</div>
-					<div v-if="selectedOption === 'projects'">
-						<ul>
-							<li
-								v-for="project in projects"
-								:key="project.id"
-								@mouseover="onHoverContact(project.name)"
-								@mouseleave="onMouseLeave"
-							>
-								<a :href="project.html_url" target="_blank">{{
-									project.name
-								}}</a>
-								<div>
-									<span>{{ project.updated_at }}</span
-									><span>/</span> <span>{{ project.type }}</span
-									><span>/</span>
-									<span>{{ project.language }}</span>
-								</div>
-							</li>
-						</ul>
-					</div>
-					<div v-if="selectedOption === 'contacts'" style="margin-top: 20px">
-						<ul>
-							<li>
-								<a href="https://t.me/eveanatomy" target="_blank">
-									<!-- <img :src="require('@/assets/icons/tg.png')" alt="telegram" /> -->
-									<div>telegram</div>
-								</a>
-							</li>
-							<li>
-								<a href="https://wa.me/996708857412" target="_blank">
-									<!-- <img :src="require('@/assets/icons/wa.png')" alt="whatsapp" /> -->
-									<div>whatsapp</div>
-								</a>
-							</li>
-							<li>
-								<a
-									href="https://www.linkedin.com/in/mark-ryzhov-576487309?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BAt3GM91fQ%2F6p8%2BtL2zHQvA%3D%3D"
-									target="_blank"
+				<!-- <div class="ascii-toggle" @click="toggleAsciiEffect">
+					<span>{{
+						asciiEffectEnabled ? "ascii planet off" : "ascii planet on"
+					}}</span>
+				</div> -->
+			</div>
+			<div class="wrapper">
+				<AsciiEffectCanvas
+					v-if="asciiEffectEnabled"
+					:currentTheme="currentTheme"
+				/>
+				<Particles
+					v-else-if="currentParticleImage === ''"
+					:currentTheme="currentTheme"
+				/>
+				<ImageParticles
+					v-else
+					:particleImage="currentParticleImage"
+					:currentTheme="currentTheme"
+				/>
+				<div class="text">
+					<div class="left-side">
+						<h1>MARK RYZHOV</h1>
+						<div class="job">Fullstack Developer</div>
+						<div class="sections">
+							<ul>
+								<li
+									:class="selectedOption === 'aboutMe' ? 'selected' : ''"
+									@click="selectOption('aboutMe')"
 								>
-									<!-- <img :src="require('@/assets/icons/li.png')" alt="linkedin" /> -->
-									<div>linkedin</div>
-								</a>
-							</li>
-							<li>
-								<a href="mailto:fidgetyman@gmail.com" target="_blank">
-									<!-- <img :src="require('@/assets/icons/email.png')" alt="email" /> -->
-									<div>fidgetyman@gmail.com</div>
-								</a>
-							</li>
-						</ul>
+									<span>{{ selectedOption === "aboutMe" ? "->" : "" }}</span>
+									about me
+								</li>
+								<li
+									:class="selectedOption === 'projects' ? 'selected' : ''"
+									@click="selectOption('projects')"
+								>
+									<span>{{ selectedOption === "projects" ? "->" : "" }}</span>
+									projects
+								</li>
+								<li
+									:class="selectedOption === 'contacts' ? 'selected' : ''"
+									@click="selectOption('contacts')"
+								>
+									<span>{{ selectedOption === "contacts" ? "->" : "" }}</span>
+									contacts
+								</li>
+							</ul>
+						</div>
+					</div>
+
+					<div
+						class="content"
+						ref="contentDiv"
+						style="overflow-y: auto; max-height: 100%"
+					>
+						<div
+							v-if="selectedOption === 'aboutMe'"
+							class="about-me-text"
+							style="margin-top: 20px"
+						>
+							Born in 1999 in Far-Eastern region of Russia.<br /><br />I am a
+							results-oriented fullstack web developer committed to crafting
+							high-performance web applications.<br /><br />My goal is to merge
+							functionality and aesthetics to create exceptional user
+							experiences.
+						</div>
+						<div v-if="selectedOption === 'projects'">
+							<ul>
+								<li
+									v-for="project in projects"
+									:key="project.id"
+									@mouseover="onHoverContact(project.name)"
+									@mouseleave="onMouseLeave"
+								>
+									<a :href="project.html_url" target="_blank">{{
+										project.name
+									}}</a>
+									<div>
+										<span>{{ project.updated_at }}</span
+										><span>/</span> <span>{{ project.type }}</span
+										><span>/</span>
+										<span>{{ project.language }}</span>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div v-if="selectedOption === 'contacts'" style="margin-top: 20px">
+							<ul>
+								<li>
+									<a href="https://t.me/eveanatomy" target="_blank">
+										<!-- <img :src="require('@/assets/icons/tg.png')" alt="telegram" /> -->
+										<div>telegram</div>
+									</a>
+								</li>
+								<li>
+									<a href="https://wa.me/996708857412" target="_blank">
+										<!-- <img :src="require('@/assets/icons/wa.png')" alt="whatsapp" /> -->
+										<div>whatsapp</div>
+									</a>
+								</li>
+								<li>
+									<a
+										href="https://www.linkedin.com/in/mark-ryzhov-576487309?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BAt3GM91fQ%2F6p8%2BtL2zHQvA%3D%3D"
+										target="_blank"
+									>
+										<!-- <img :src="require('@/assets/icons/li.png')" alt="linkedin" /> -->
+										<div>linkedin</div>
+									</a>
+								</li>
+								<li>
+									<a href="mailto:fidgetyman@gmail.com" target="_blank">
+										<!-- <img :src="require('@/assets/icons/email.png')" alt="email" /> -->
+										<div>fidgetyman@gmail.com</div>
+									</a>
+								</li>
+							</ul>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	</transition>
 </template>
 
 <script>
@@ -133,12 +145,14 @@ import ImageParticles from "./ImageParticles.vue";
 import "@/assets/fonts/fonts.css";
 import customCursorDark from "@/assets/textures/cursor.png";
 import customCursorLight from "@/assets/textures/cursor-light.png";
+import LoaderText from "./LoaderText.vue";
 
 export default {
 	components: {
 		AsciiEffectCanvas,
 		Particles,
 		ImageParticles,
+		LoaderText,
 	},
 	data() {
 		return {
@@ -183,6 +197,8 @@ export default {
 			asciiEffectEnabled: false,
 			currentParticleImage: "",
 			customCursor: `url(${customCursorDark}) 16 16, pointer`,
+			loaderVisible: true,
+			mainContentVisible: false,
 		};
 	},
 	computed: {
@@ -201,6 +217,9 @@ export default {
 		},
 	},
 	async mounted() {
+		setTimeout(() => {
+			this.loaderVisible = false; // Hide loader after 2 seconds
+		}, 1500);
 		if (this.selectedOption === "projects") {
 			this.attachScrollListener();
 		}
@@ -213,6 +232,7 @@ export default {
 			console.log(err);
 			this.error = "Failed to load projects.";
 		} finally {
+			setTimeout(2000);
 			this.loading = false;
 		}
 	},
@@ -220,8 +240,11 @@ export default {
 		this.detachScrollListener();
 	},
 	methods: {
+		showMainContent() {
+			this.mainContentVisible = true; // Show main content after loader disappears
+		},
 		attachScrollListener() {
-			const contentDiv = this.$el.querySelector(".content");
+			const contentDiv = this.$refs.contentDiv;
 			console.log("attaching to ", contentDiv);
 			if (contentDiv) {
 				contentDiv.addEventListener("scroll", this.handleScroll);
@@ -229,7 +252,7 @@ export default {
 		},
 		// Detach the scroll listener
 		detachScrollListener() {
-			const contentDiv = this.$el.querySelector(".content");
+			const contentDiv = this.$refs.contentDiv;
 			if (contentDiv) {
 				contentDiv.removeEventListener("scroll", this.handleScroll);
 			}
@@ -330,7 +353,7 @@ h1 {
 }
 
 .about-me-text {
-	font-weight: 600;
+	font-weight: 400;
 }
 
 .text {
@@ -539,4 +562,40 @@ li {
 		font-size: 1.5vw;
 	}
 }
+
+@keyframes fade-left-right {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+@keyframes fade {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+/* Apply animation when loader is entering */
+.fade-left-right-enter-active {
+	animation: fade-left-right 1s forwards;
+}
+
+/* Apply animation when loader is leaving */
+.fade-left-right-leave-active {
+	animation: fade-left-right 1s forwards;
+}
+
+.fade-enter-active {
+	animation: fade 1s forwards;
+}
+.fade-leave-active {
+	animation: fade 1s forwards;
+}
+
 </style>
