@@ -186,7 +186,7 @@ export default {
 					html_url: "",
 					description: "news analyser",
 					type: "web app",
-					language: "Streamlit+Python",
+					language: "Streamlit",
 					updated_at: "MAY 2021",
 				},
 			],
@@ -354,7 +354,7 @@ h1 {
 
 .about-me-text {
 	font-weight: 400;
-	font-size: 2.5vw !important;
+	font-size: 3vw !important;
 }
 
 .text {
