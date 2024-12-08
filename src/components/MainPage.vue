@@ -218,8 +218,8 @@ export default {
 	},
 	async mounted() {
 		setTimeout(() => {
-			this.loaderVisible = false; // Hide loader after 2 seconds
-		}, 1500);
+			this.loaderVisible = false; // Hide loader after 1 second
+		}, 1000);
 		if (this.selectedOption === "projects") {
 			this.attachScrollListener();
 		}
@@ -336,7 +336,7 @@ h1 {
 	font-size: 5vw; /* Responsive font size */
 	margin: 0 5px;
 	text-align: left;
-	font-weight: 600;
+	font-weight: 400;
 }
 
 .wrapper {
@@ -583,19 +583,19 @@ li {
 
 /* Apply animation when loader is entering */
 .fade-left-right-enter-active {
-	animation: fade-left-right 1s forwards;
+	animation: fade-left-right 0.5s forwards;
 }
 
 /* Apply animation when loader is leaving */
 .fade-left-right-leave-active {
-	animation: fade-left-right 1s forwards;
+	animation: fade-left-right 0.5s forwards;
 }
 
 .fade-enter-active {
-	animation: fade 1s forwards;
+	animation: fade 0.5s forwards;
 }
 .fade-leave-active {
-	animation: fade 1s forwards;
+	animation: fade 0.5s forwards;
 }
 
 </style>
